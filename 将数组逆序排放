@@ -1,0 +1,100 @@
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+	char str[101];
+	for (int i = 0;i < 100;i++)
+		scanf("%c,", &str[i]);
+	int j = strlen(str);
+	for (j;j >= 0;j--)
+	{
+		printf("%c,", str[j]);
+	}
+} //出现的问题：在用scanf进行单个输入的时候，没有\0结束，导致字符数组非法；又因为没有\0结束，使得strlen没法正常结束，所以错误
+
+
+
+改法1：手动添加\0
+#include<stdio.h>
+#include<string.h>
+
+int main()
+{
+    char str[101];
+    int i = 0;
+    char ch;
+    
+    printf("请输入字符（回车结束）: ");
+    
+    // 正确读取字符直到回车或满
+    while (i < 100 && (ch = getchar()) != '\\n')
+    {
+        str[i] = ch;
+        i++;
+    }
+    str[i] = '\\0';  // ⭐必须添加结束符！
+    
+    int len = i;  // ⭐使用实际输入长度//因为输入的不是字符串，所以不能使用strlen
+    
+    printf("逆序输出: ");
+    for (int j = len - 1; j >= 0; j--)  // ⭐从len-1开始
+    {
+        printf("%c", str[j]);
+        if (j > 0) printf(",");  // 可选：添加逗号
+    }
+    
+    return 0;
+}
+
+
+改法2：推荐字符串输入
+#include<stdio.h>
+#include<string.h>
+
+int main()
+{
+    char str[101];
+    int i;
+    
+    printf("请输入字符串: ");
+    scanf("%100s", str);  // ⭐直接读取整个字符串//只有字符串才会自动加\0    
+    int len = strlen(str);  // ⭐现在strlen能正常工作了
+    
+    printf("逆序输出: ");
+    for (int j = len - 1; j >= 0; j--)//注意是len-1，因为计算的是长度，第一个数对应长度为1，但是数组当中下标是0.
+    {
+        printf("%c", str[j]);
+        if (j > 0) printf(",");
+    }
+    
+    return 0;
+}
+
+
+最优解：对称互换
+书本答案做法；只能先确定一共多少数字，不灵活；
+deep seek：
+#include<stdio.h>
+
+int main()
+{
+    char str[101];
+    int len = 0;
+    
+    printf("请输入字符串: ");
+    
+    // 读取并计算长度
+    while ((str[len] = getchar()) != '\n' && len < 100) len++;
+    str[len] = '\0';
+    
+    // 逆序交换
+    for (int i = 0, j = len - 1; i < j; i++, j--)
+    {
+        char temp = str[i];
+        str[i] = str[j];
+        str[j] = temp;
+    }
+    
+    printf("逆序结果: %s\n", str);
+    return 0;
+}
