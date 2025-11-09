@@ -1,0 +1,29 @@
+#include<stdio.h>
+
+int main()
+{
+    int m, n, a, b, remainder;
+    
+    printf("请输入两个正整数: ");
+    scanf("%d %d", &m, &n);
+    
+    // 保存原始值用于计算最小公倍数
+    a = m;
+    b = n;
+    
+    // 辗转相除法求最大公约数
+    while (b != 0)
+    {
+        remainder = a % b;  // 求余数
+        a = b;              // 除数变成被除数
+        b = remainder;      // 余数变成除数
+    }
+    
+    int gcd = a;  // 最大公约数
+    int lcm = m * n / gcd;  // 最小公倍数
+    
+    printf("最大公约数(GCD): %d\\n", gcd);
+    printf("最小公倍数(LCM): %d\\n", lcm);
+    
+    return 0;
+}
