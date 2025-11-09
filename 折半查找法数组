@@ -1,0 +1,52 @@
+#include<stdio.h>//关键是不用再用具体的数字去分，而是利用数组的特性，用下标数字指代mid,lou,high 在引入一个标志，判断找没找到
+
+int main()
+{
+    int arr[14] = {2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28};
+    int target;
+    int low = 0, high = 13;
+    int mid, step = 1;
+    int found = 0;
+    
+    printf("请输入要查找的数: ");
+    scanf("%d", &target);
+    
+    printf("\\n查找过程:\\n");
+    
+    while (low <= high)
+    {
+        mid = (low + high) / 2;
+        
+        printf("第%d步: 查找区间[%d,%d], 中间位置%d, 值=%d", 
+               step, low, high, mid, arr[mid]);
+        
+        if (arr[mid] == target)
+        {
+            printf(" → 找到！\\n");
+            found = 1;
+            break;
+        }
+        else if (arr[mid] < target)
+        {
+            printf(" → 目标在右半区\\n");
+            low = mid + 1;
+        }
+        else
+        {
+            printf(" → 目标在左半区\\n");
+            high = mid - 1;
+        }
+        step++;
+    }
+    
+    if (found)
+    {
+        printf("\\n结果: 数字 %d 在数组中是第 %d 个数\\n", target, mid + 1);
+    }
+    else
+    {
+        printf("\\n结果: 无此数\\n");
+    }
+    
+    return 0;
+}
