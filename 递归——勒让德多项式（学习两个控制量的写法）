@@ -1,0 +1,19 @@
+#include<stdio.h>
+int main()
+{
+	int n;
+	double x,result;
+	printf("请输入阶数：\\\\n");
+	scanf("%d", &n);
+	printf("请输入x值：\\\\n");
+	scanf("%lf", &x);
+	double lrd(int n, double x);
+	result = lrd(n, x);
+	printf("p%d(%3lf)结果是%5lf",n,x, result);
+}
+double lrd(int n,double x)
+{
+	if (n == 0) return(1);
+	else if (n == 1) { return(x); }
+	else return(((2 * n - 1) * x - lrd(n - 1, x) - (n - 1) * lrd(n - 2, x)) / n);
+}
