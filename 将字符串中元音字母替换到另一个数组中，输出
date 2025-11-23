@@ -1,0 +1,24 @@
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+	char a[101],b[51];
+	gets(a);
+	gets(b);
+	void copy(char a[],char b[]);
+	copy(a, b);
+}
+void copy(char a[], char b[])
+{
+	char c[51] = { 0 };
+	for (int x = 0,y=0;x<= strlen(b) - 1;x++)
+	{
+		if (b[x] == 'a' || b[x] == 'e' || b[x] == 'i' || b[x] == 'o' || b[x] == 'u')
+		{
+			c[y] = b[x];
+			y++;
+		}
+	}
+	c[50] = 0;
+	printf("一个字符中的元音字母复制到另一个字符串中的结果为：%s",c);
+}
