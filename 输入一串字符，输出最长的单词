@@ -1,0 +1,50 @@
+#include <stdio.h>
+
+int main() {
+    char str[1000];
+    int i, start = 0, len = 0;      // 当前单词的起始位置和长度
+    int max_start = 0, max_len = 0; // 最长单词的起始位置和长度
+
+    printf("输入一行字符:\n ");
+    fgets(str, 1000, stdin);
+
+    i = 0;
+    while (str[i] != '\0') {
+        // 如果是字母
+        if ((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z'))
+        {
+            if (len == 0) 
+            {
+                start = i;  // 记录单词开始位置
+            }
+            len++;          // 单词长度加1
+        }
+        else
+        {
+            // 不是字母，检查当前单词是否最长
+            if (len > max_len) {
+                max_len = len;
+                max_start = start;
+            }
+            len = 0;  // 重置单词长度
+        }
+        i++;
+        }
+    // 检查最后一个单词
+    if (len > max_len) {
+        max_len = len;
+        max_start = start;
+    }
+
+    // 输出最长单词
+    if (max_len > 0) {
+        printf("最长单词: ");
+        for (i = 0; i < max_len; i++) {
+            printf("%c", str[max_start + i]);
+        }
+        printf("\n长度: %d\n", max_len);
+    }
+    else {
+        printf("没有找到单词\n");
+    }
+    }
