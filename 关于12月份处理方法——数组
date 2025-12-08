@@ -1,0 +1,30 @@
+#include <stdio.h>
+
+void month_day(int year, int yearday, int* pmonth, int* pday);
+
+int main() {
+    int year, day;
+    scanf("%d,%d", &year, &day);
+    int pmonth, pday;
+    month_day(year, day, &pmonth, &pday);
+    printf("%d-%d-%d", year, pmonth, pday);
+    return 0;
+}
+
+void month_day(int year, int day, int* pmonth, int* pday)
+{
+    // 定义每个月的天数
+    int month_days[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    
+    // 判断闰年
+    if ((year % 4 == 0 && year % 100 != 0)||year%400==0)month_days[1]=29;
+ int i;
+    for (i = 0; i < 12; i++) {
+        if (day <= month_days[i]) {
+            *pmonth = i + 1;  // 月份从1开始
+            *pday = day;
+            return;
+        }
+        day -= month_days[i];
+    }
+}
