@@ -1,0 +1,55 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define LEN sizeof(struct student)
+//需要引入的文件
+//如提示运行通过，但解题失败，认真对比预期输出和实际输出之间的差异
+int main()
+{
+	//注意：main函数必须return 0,否则无法通过评测， 因此不要修改下面的代码
+	struct student
+	{
+		int num;
+		float score;
+		struct student* next;
+    }*p1,*p2,*head=NULL;
+	int n = 0;
+	p1 = p2 = (struct student*)malloc(LEN);
+	scanf("%d,%f", &p1->num, &p1->score);
+	while (p2->num != 0)
+	{
+		n = n + 1;
+		if (n == 1)head = p1;
+		else p1->next = p2;
+		p1 = p2;
+		p2 = (struct student*)malloc(LEN);
+		scanf("%d,%f", &p2->num, &p2->score);
+	}
+	p1->next = NULL;
+	struct student t ;
+	for (int i = 1;i < n;i++)
+	{
+		p1 = head;p2 = head->next;
+		while (p2 != NULL)
+		{
+			if (p1->score < p2->score)
+			{
+				t.num = p1->num;
+				p1->num = p2->num;
+				p2->num = t.num;
+				t.score= p1->score;
+				p1->score = p2->score;
+				p2->score = t.score;
+			}
+			p1 = p2;
+			p2 = p2->next;
+		}
+	}
+	printf("Now,These 5 records are:\n");
+	p1 = head;
+	while (p1 != NULL)
+	{
+		printf("%d %.1f\n", p1->num, p1->score);
+		p1 = p1->next;
+	}
+	return 0;
+}
