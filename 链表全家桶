@@ -1,0 +1,126 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define LEN sizeof(struct student)
+struct student
+{
+	long num;
+	float score;
+	struct student* next;
+};
+int n;
+struct student* create()
+{
+	struct student * head, * p1, * p2;
+	head = NULL;
+	n = 0;
+	p1=p2 = (struct student*)malloc(LEN);
+	scanf("%ld %f", &p2->num,&p2->score);
+	while(p2->num != 0)//这里是保证下一组是有效的数据才会计数加1
+	{
+		n = n + 1;
+		if (n == 1)head = p1;
+		else p1->next = p2;
+		p1 = p2;
+		p2 = (struct student*)malloc(LEN);
+		scanf("%d %f", &p2->num, &p2->score);//p1,p2始终有滞后
+	}
+	p1->next = NULL;//如果不是有效数字，p1结尾指向NULL
+	return(head);//返回头指针
+}
+struct student* del(struct student* head,long num)
+{
+	struct student* p1, * p2=NULL;//需要两个：单向链表，将所删除节点的上一个链接删除节点的下一个（存在三个元素）
+	if (head == NULL)
+	{
+		printf("空表!\n");
+		return(head);
+	}
+	p1 = head;
+	while (p1->num != num && p1->next != NULL)//p1指向的不是目标节点并且后面还有节点
+	{
+		p2 = p1;//p2滞后
+		p1 = p1->next;
+	}
+	if (p1->num == num)//判断是找到了节点 还是 遍历结束
+	{
+		if (p1 == head) head = p1->next;//若为head
+		else p2->next = p1->next;//目标在中间或者最后一个，相同处理
+		printf("删除%ld", num);
+		n = n - 1;
+	}
+	else printf("%ld没找到!\n", num);
+	return(head);
+}
+struct student* insert(struct student* head, struct student* stud)
+{
+	struct student* p0, * p1, * p2;
+	p1 = head;
+	p0 = stud;//便于操作
+	p2 = NULL;
+	if(head==NULL)//原表为空，p0为head
+	{
+		head = p0;p0->next = NULL;
+	}
+	else
+	{
+		while ((p0->num > p1->num) && (p1->next != NULL))
+		{
+			p2 = p1;
+			p1 = p1->next;
+		}
+		if (p0->num <= p1->num)
+		{
+			if (p1 == head)head = p0;
+			else p2->next = p0;
+			p0->next = p1;
+		}
+		else
+		{
+			p1->next = p0;
+			p0->next = NULL;
+		}
+	}
+	n = n + 1;//节点加一
+	return(head);
+}
+void print(struct student* head)
+{
+	struct student* p;
+	printf("这%d个数据为：\n", n);
+	p = head;
+	if(head!=NULL)
+		while (p != NULL)
+		{
+			printf("%ld %5.2f\n", p->num, p->score);
+			p = p->next;
+		}
+}
+int main()
+{
+	struct student* head, * stu;
+	long del_num;
+	printf("输入数据：\n");
+	head = create();
+	print(head);
+	printf("输入要删除的学号：\n");
+	scanf("%ld",&del_num);
+	while (del_num != 0)//多次删除操作
+	{
+		head=del(head, del_num);
+		print(head);
+		printf("输入要删除的学号：\n");
+		scanf("%ld", &del_num);
+	}
+	printf("输入要插入的数据：\n");
+	stu = (struct student*)malloc(LEN);
+	scanf("%d %f", &stu->num, &stu->score);
+	while (stu->num != 0)//多次插入
+	{
+		head = insert(head, stu);
+		print(head);
+		printf("输入要插入的数据：\n");
+		stu = (struct student*)malloc(LEN);//实现多次插入，必不可少重新开创动态储存空间
+		scanf("%d %f", &stu->num, &stu->score);
+	}
+	return(0);
+}
